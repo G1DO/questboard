@@ -10,3 +10,7 @@ __pycache__/      # compiled Python bytecode, useless to commit
 .DS_Store        # macOS metadata file, not useful
 .idea/           # JetBrains IDE project settings
 .vscode/         # VS Code local settings
+**/__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
