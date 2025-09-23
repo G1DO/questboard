@@ -14,3 +14,6 @@ __pycache__/      # compiled Python bytecode, useless to commit
 *.py[cod]
 *.pyo
 *.pyd
+instance/
+.mypy_cache/
+.pytest_cache/
