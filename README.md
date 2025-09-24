@@ -3,26 +3,28 @@
 This repository provides a minimal Flask application skeleton, achieving **Milestone 1** with database integration and API functionality, and **Milestone 2** with authentication, validation, and CORS.
 
 ## Technology Stack
-- Flask
-- Flask-SQLAlchemy
-- SQLAlchemy
-- Flask-Migrate (powered by Alembic)
-- python-dotenv
-- SQLite (for development)
-- **Milestone 2:** Flask-JWT-Extended, Flask-CORS, Pydantic, email-validator, Werkzeug
+
+* Flask
+* Flask-SQLAlchemy
+* SQLAlchemy
+* Flask-Migrate (powered by Alembic)
+* python-dotenv
+* SQLite (for development)
+* **Milestone 2:** Flask-JWT-Extended, Flask-Cors, Pydantic, email-validator, Werkzeug
 
 ---
 
 ## Quickstart: Launching the Server (Milestone 0)
 
 1. Create and activate a virtual environment:
+
    ```bash
    python -m venv .venv
-````
+   ```
 
-* For Windows (Command Prompt): `.venv\Scripts\activate`
-* For Windows (PowerShell): `. .\.venv\Scripts\Activate.ps1`
-* For Linux, macOS, or WSL: `source .venv/bin/activate`
+   * For Windows (Command Prompt): `.venv\Scripts\activate`
+   * For Windows (PowerShell): `. .\.venv\Scripts\Activate.ps1`
+   * For Linux, macOS, or WSL: `source .venv/bin/activate`
 
 2. Install dependencies:
 
@@ -106,7 +108,7 @@ This repository provides a minimal Flask application skeleton, achieving **Miles
    curl http://localhost:8000/api/leaderboard
    ```
 
-   Note: On Windows PowerShell, escape quotes using backticks, or utilize tools such as Postman or Insomnia for API testing.
+   *Note (Windows PowerShell):* escape quotes using backticks, or use Postman/Insomnia for API testing.
 
 ## API Documentation (Milestone 1)
 
@@ -114,16 +116,16 @@ Base URL: [http://localhost:8000/api](http://localhost:8000/api)
 
 | Method | Path                                   | Request Body (JSON)                                                                               | Response Example                                           |
 | ------ | -------------------------------------- | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| POST   | /users                                 | `{"email":"a@b.com","display_name":"Alice"}`                                                      | `{"id": <user_id>, "email": "...", "display_name": "..."}` |
-| GET    | /quests                                | —                                                                                                 | `[ ...quests ]`                                            |
-| POST   | /quests                                | `{"title":"...","description":"...","starts_on":"YYYY-MM-DD","ends_on":"YYYY-MM-DD","points":10}` | `{"id": <quest_id>}`                                       |
-| POST   | /submissions                           | `{"user_id":1,"quest_id":1,"text":"Finished!","image_url":null}`                                  | `{"id":...,"status":"pending"}`                            |
-| POST   | /submissions/\<submission\_id>/approve | —                                                                                                 | `{"id":...,"status":"approved"}`                           |
-| GET    | /leaderboard                           | —                                                                                                 | `[{"user":"Alice","points":15}, ...]`                      |
+| POST   | `/users`                               | `{"email":"a@b.com","display_name":"Alice"}`                                                      | `{"id": <user_id>, "email": "...", "display_name": "..."}` |
+| GET    | `/quests`                              | —                                                                                                 | `[ ...quests ]`                                            |
+| POST   | `/quests`                              | `{"title":"...","description":"...","starts_on":"YYYY-MM-DD","ends_on":"YYYY-MM-DD","points":10}` | `{"id": <quest_id>}`                                       |
+| POST   | `/submissions`                         | `{"user_id":1,"quest_id":1,"text":"Finished!","image_url":null}`                                  | `{"id":...,"status":"pending"}`                            |
+| POST   | `/submissions/<submission_id>/approve` | —                                                                                                 | `{"id":...,"status":"approved"}`                           |
+| GET    | `/leaderboard`                         | —                                                                                                 | `[{"user":"Alice","points":15}, ...]`                      |
 
 Notes:
 
-* Dates must adhere to the ISO format: YYYY-MM-DD.
+* Dates must adhere to the ISO format: `YYYY-MM-DD`.
 * Points are awarded to users only upon approval of a submission.
 
 ---
@@ -169,6 +171,7 @@ Notes:
      source .venv/bin/activate
      python wsgi.py
      ```
+
    * **CLI (cookie-based)**
 
      ```bash
@@ -185,6 +188,7 @@ Notes:
      # authenticated call
      curl -b cookies.txt http://localhost:8000/auth/me
      ```
+
    * **Browser (store cookie)** — open DevTools → Console:
 
      ```js
@@ -196,6 +200,7 @@ Notes:
      });
      // Then visit: http://localhost:8000/auth/me
      ```
+
    * **Bearer token (optional CLI alternative)**
 
      ```bash
@@ -230,7 +235,7 @@ Notes:
      # /auth/me (and elsewhere)
      uid = int(get_jwt_identity())
      ```
-   * **“Missing cookie 'access\_token\_cookie'” in browser** → log in from the browser with `credentials:'include'`.
+   * **“Missing cookie `access_token_cookie`” in browser** → log in from the browser with `credentials:'include'`.
    * **Token expired (401)** → log in again, or set a dev expiry:
 
      ```python
@@ -299,6 +304,3 @@ questboard/
 ├─ .gitignore
 └─ README.md
 ```
-
-
-
