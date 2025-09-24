@@ -1,4 +1,3 @@
-````md
 # QuestBoard
 
 This repository provides a minimal Flask application skeleton, achieving **Milestone 1** with database integration and API functionality, and **Milestone 2** with authentication, validation, and CORS.
