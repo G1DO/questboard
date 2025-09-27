@@ -1,0 +1,25 @@
+{% extends "_base.html" %}
+{% block content %}
+<h2>Quests</h2>
+
+<div id="quests-list"></div>
+
+<hr/>
+
+<h3>Create submission</h3>
+<form id="submission-form">
+  <label>Quest
+    <select name="quest_id" id="quest-select" required>
+      <option value="" disabled selected>Loading…</option>
+    </select>
+  </label>
+
+  <label>Text
+    <input type="text" name="text" />
+  </label>
+
+  <button type="submit">Submit proof</button>
+</form>
+
+<div id="submission-msg"></div>
+{% endblock %}
