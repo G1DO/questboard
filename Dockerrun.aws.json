@@ -8,25 +8,7 @@
       "memory": 512,
       "portMappings": [
         {
-          "containerPort": 8080,
-          "hostPort": 8080
-        }
-      ]
-    },
-    {
-      "name": "db",
-      "image": "postgres:16",
-      "essential": false,
-      "environment": [
-        { "name": "POSTGRES_USER", "value": "questdb" },
-        { "name": "POSTGRES_PASSWORD", "value": "questdb" },
-        { "name": "POSTGRES_DB", "value": "questdb" }
-      ],
-      "memory": 512,
-      "portMappings": [
-        {
-          "containerPort": 5432,
-          "hostPort": 5432
+          "containerPort": 8080
         }
       ]
     }
