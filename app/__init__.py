@@ -24,7 +24,9 @@ def create_app(config_name: str | None = None) -> Flask:
 
     # CORS (safe even if same-origin)
     CORS(app, resources={r"/api/*": {"origins": [
-        "http://localhost:3000", "http://localhost:5173", "http://localhost:8000"
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "http://questboard-env.eba-3rfff74z.eu-north-1.elasticbeanstalk.com"
     ]}}, supports_credentials=True)
 
     # Blueprints
