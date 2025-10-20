@@ -1,12 +1,14 @@
 services:
   db:
     image: postgres:16
+    restart: unless-stopped
     environment:
       POSTGRES_USER: quest
       POSTGRES_PASSWORD: quest
       POSTGRES_DB: questdb
+    # If 5432 is already taken on your machine, map host 5433 -> container 5432
     ports:
-      - "5432:5432"
+      - "5433:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U quest -d questdb"]
       interval: 5s
@@ -15,11 +17,17 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-
   web:
+    # Option A: use your published image (simplest)
     image: g1d0/questboard-web:v0.1.0
+    # Option B: build locally instead (uncomment next 2 lines and comment the image line)
+    # build: .
+    # image: questboard-web:dev
+
+    restart: unless-stopped
     env_file: .env
     environment:
+    # docker compose exec db psql -U questdb -d questdb to access the DB from the db container
       DATABASE_URL: postgresql+psycopg://quest:quest@db:5432/questdb
       FLASK_ENV: production
     ports:
