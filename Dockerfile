@@ -12,12 +12,15 @@ WORKDIR /app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Non-root user
+# ✅ Install Gunicorn for production
+RUN pip install gunicorn
+
+# Create non-root user for safety
 RUN groupadd -r appuser && useradd -r -g appuser -m appuser
 COPY --chown=appuser:appuser . .
 
 USER appuser
 EXPOSE 8000
 
-# Apply migrations (no-op if up-to-date), then start app
-CMD bash -lc "flask db upgrade || true; gunicorn wsgi:app"
+# ✅ Apply migrations (if available) and then start Gunicorn
+CMD bash -lc "flask db upgrade || true && gunicorn -b 0.0.0.0:8000 wsgi:app"
