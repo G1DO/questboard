@@ -54,8 +54,6 @@ cp .env.example .env
 
 ### 3) Start with Postgres via Compose
 
-Run it:
-
 ```bash
 docker compose pull
 docker compose up -d
