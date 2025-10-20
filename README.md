@@ -21,7 +21,6 @@ A gamified “micro-challenges” platform built with **Flask**. Users register,
 * [API Endpoints](#api-endpoints)
 * [Basic UI Pages](#basic-ui-pages)
 * [Docker Image (push/pull)](#docker-image-pushpull)
-* [Troubleshooting](#troubleshooting)
 * [Project Structure](#project-structure)
 
 ---
@@ -54,22 +53,6 @@ cp .env.example .env
 ```
 
 ### 3) Start with Postgres via Compose
-
-Using the published image (easiest):
-
-```yaml
-# docker-compose.yml (excerpt)
-web:
-  image: g1d0/questboard-web:v0.1.0
-  env_file: .env
-  environment:
-    DATABASE_URL: postgresql+psycopg://quest:quest@db:5432/questdb
-    FLASK_ENV: production
-  ports: ["8000:8000"]
-  depends_on:
-    db:
-      condition: service_healthy
-```
 
 Run it:
 
