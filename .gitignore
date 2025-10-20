@@ -17,3 +17,7 @@ __pycache__/      # compiled Python bytecode, useless to commit
 instance/
 .mypy_cache/
 .pytest_cache/
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
