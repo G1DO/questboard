@@ -174,8 +174,6 @@ Server-rendered pages (Jinja):
 * `/quests` List quests + create submission
 * `/leaderboard` Weekly leaderboard
 
-If you add a React SPA later, call the same endpoints and enable CORS (`credentials: 'include'`).
-
 ---
 
 ## Docker Image (push/pull)
