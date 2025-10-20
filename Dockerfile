@@ -23,4 +23,4 @@ USER appuser
 EXPOSE 8000
 
 # ✅ Apply migrations (if available) and then start Gunicorn
-CMD bash -lc "flask db upgrade || true && gunicorn -b 0.0.0.0:8000 wsgi:app"
+CMD bash -lc "flask db upgrade || true && gunicorn -b 0.0.0.0:8080 wsgi:app"
