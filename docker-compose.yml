@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   db:
     image: postgres:16
@@ -6,9 +8,8 @@ services:
       POSTGRES_USER: questdb
       POSTGRES_PASSWORD: questdb
       POSTGRES_DB: questdb
-    # expose locally only (remove on AWS) 34an amzaon feh goa y3rf yb2t 3la el db
     ports:
-      - "5433:5432"
+      - "5433:5432"          # for local testing only
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U questdb -d questdb"]
       interval: 5s
@@ -18,14 +19,14 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   web:
-    image: g1d0/questboard-web:v0.1.7
+    build: .
     restart: unless-stopped
     env_file: .env
     environment:
       DATABASE_URL: postgresql+psycopg://questdb:questdb@db:5432/questdb
       FLASK_ENV: production
     ports:
-      - "8000:8000"
+      - "8080:8080"
     depends_on:
       db:
         condition: service_healthy
