@@ -4,7 +4,7 @@ A gamified “micro-challenges” platform built with **Flask**. Users register,
 
 * Backend: Flask + SQLAlchemy + Alembic (Flask-Migrate)
 * Auth: JWT (HttpOnly cookies) via Flask-JWT-Extended
-* Frontend: Jinja templates + vanilla JS (React optional later)
+* Frontend: Jinja templates + vanilla JS
 * DB: Postgres (Docker) or SQLite (local dev)
 * Container: Docker + Gunicorn
 * Deploy-ready: image published on Docker Hub
@@ -20,7 +20,6 @@ A gamified “micro-challenges” platform built with **Flask**. Users register,
 * [Database & Migrations](#database--migrations)
 * [API Endpoints](#api-endpoints)
 * [Basic UI Pages](#basic-ui-pages)
-* [Testing & Linting](#testing--linting)
 * [Docker Image (push/pull)](#docker-image-pushpull)
 * [Troubleshooting](#troubleshooting)
 * [Project Structure](#project-structure)
