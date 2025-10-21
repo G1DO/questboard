@@ -1,8 +1,3 @@
-Got it — here’s the **final polished `README.md`** version with a **single, complete Table of Contents** (everything included in one place).
-No split sections, all headers unified, consistent formatting, and ready for GitHub display.
-
----
-
 # 🧭 QuestBoard
 
 A gamified “micro-challenges” platform built with **Flask**.
