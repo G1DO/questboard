@@ -37,7 +37,7 @@
       ],
       "environment": [
         { "name": "FLASK_ENV", "value": "production" },
-        { "name": "DATABASE_URL", "value": "postgresql+psycopg://questdb:hema12345@questboard-db.cpioco0eyxc1.eu-north-1.rds.amazonaws.com:5432/questdb" }
+        { "name": "DATABASE_URL", "value": "postgresql://questdb:hema12345@questboard-db.cpioco0eyxc1.eu-north-1.rds.amazonaws.com:5432/questdb" }
       ],
       "links": ["db"]
     }
