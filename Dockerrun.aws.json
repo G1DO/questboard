@@ -1,0 +1,66 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "db",
+      "image": "postgres:16",
+      "essential": true,
+      "memory": 512,
+      "portMappings": [
+        {
+          "hostPort": 5432,
+          "containerPort": 5432
+        }
+      ],
+      "environment": [
+        { "name": "POSTGRES_USER", "value": "questdb" },
+        { "name": "POSTGRES_PASSWORD", "value": "questdb" },
+        { "name": "POSTGRES_DB", "value": "questdb" }
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": "pgdata",
+          "containerPath": "/var/lib/postgresql/data"
+        }
+      ],
+      "healthCheck": {
+        "command": ["CMD-SHELL", "pg_isready -U questdb -d questdb"],
+        "interval": 5,
+        "timeout": 5,
+        "retries": 20,
+        "startPeriod": 10
+      }
+    },
+    {
+      "name": "web",
+      "image": "g1d0/questboard-web:latest",
+      "essential": true,
+      "memory": 512,
+      "portMappings": [
+        {
+          "hostPort": 8080,
+          "containerPort": 8080
+        }
+      ],
+      "environment": [
+        {
+          "name": "DATABASE_URL",
+          "value": "postgresql+psycopg://questdb:questdb@db:5432/questdb"
+        },
+        {
+          "name": "FLASK_ENV",
+          "value": "production"
+        }
+      ],
+      "links": ["db"]
+    }
+  ],
+  "volumes": [
+    {
+      "name": "pgdata",
+      "host": {
+        "sourcePath": "/var/lib/postgresql/data"
+      }
+    }
+  ]
+}

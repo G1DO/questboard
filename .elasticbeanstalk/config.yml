@@ -1,9 +1,13 @@
 branch-defaults:
   main:
-    environment: questboard3-env
+    environment: questboard-env
     group_suffix: null
+environment-defaults:
+  questboard3-env:
+    branch: null
+    repository: null
 global:
-  application_name: questboard3
+  application_name: questboard
   branch: null
   default_ec2_keyname: null
   default_platform: ECS running on 64bit Amazon Linux 2023
