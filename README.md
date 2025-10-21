@@ -1,138 +1,166 @@
-# QuestBoard
-
-A gamified “micro-challenges” platform built with **Flask**. Users register, join quests, submit proof, and climb a weekly leaderboard.
-
-* Backend: Flask + SQLAlchemy + Alembic (Flask-Migrate)
-* Auth: JWT (HttpOnly cookies) via Flask-JWT-Extended
-* Frontend: Jinja templates + vanilla JS
-* DB: Postgres (Docker) or SQLite (local dev)
-* Container: Docker + Gunicorn
-* Deploy-ready: image published on Docker Hub
+Got it — here’s the **final polished `README.md`** version with a **single, complete Table of Contents** (everything included in one place).
+No split sections, all headers unified, consistent formatting, and ready for GitHub display.
 
 ---
 
-## Table of Contents
+# 🧭 QuestBoard
 
-* [Tech Stack](#tech-stack)
-* [Run with Docker (recommended)](#run-with-docker-recommended)
-* [Run locally without Docker](#run-locally-without-docker)
-* [Environment Variables](#environment-variables)
-* [Database & Migrations](#database--migrations)
-* [API Endpoints](#api-endpoints)
-* [Basic UI Pages](#basic-ui-pages)
-* [Docker Image (push/pull)](#docker-image-pushpull)
-* [Project Structure](#project-structure)
+A gamified “micro-challenges” platform built with **Flask**.
+Users register, join quests, submit proof, and climb a weekly leaderboard.
 
 ---
 
-## Tech Stack
+## 🚀 Key Features
 
-* **Flask**, **Flask-SQLAlchemy**, **SQLAlchemy**
-* **Alembic / Flask-Migrate**
-* **Flask-JWT-Extended**, **Flask-CORS**, **Pydantic**, **email-validator**, **Werkzeug**
-* **Postgres** (Docker) or **SQLite**
-* **Gunicorn**, **Docker**, **Docker Compose**
+* Backend: **Flask + SQLAlchemy + Alembic (Flask-Migrate)**
+* Authentication: **JWT (HttpOnly cookies)** via Flask-JWT-Extended
+* Frontend: **Jinja templates + Vanilla JS**
+* Database: **Postgres (Docker)** or **SQLite (local dev)**
+* Containerization: **Docker + Gunicorn**
+* CI/CD Ready: **Elastic Beanstalk (EB CLI) auto-deploy**
+* **Live HTTPS Deployment** via AWS CloudFront + ACM Certificate
 
 ---
 
-## Run with Docker (recommended)
+## 📦 Table of Contents
 
-### 1) Prereqs
+1. [Live Deployment](#-live-deployment)
+2. [Tech Stack](#-tech-stack)
+3. [Run with Docker (Recommended)](#-run-with-docker-recommended)
+4. [Run Locally (Without Docker)](#-run-locally-without-docker)
+5. [Environment Variables](#-environment-variables)
+6. [Database & Migrations](#-database--migrations)
+7. [API Endpoints](#-api-endpoints)
+8. [Basic UI Pages](#️-basic-ui-pages)
+9. [Docker Image (Push / Pull)](#-docker-image-push--pull)
+10. [Project Structure](#️-project-structure)
 
-* Docker Desktop (Win/macOS) or Docker Engine + Compose (Linux)
+---
+
+## 🌍 Live Deployment
+
+QuestBoard is live and secured with HTTPS through AWS infrastructure:
+
+| Component               | Service                                    |
+| ----------------------- | ------------------------------------------ |
+| **Application Hosting** | AWS Elastic Beanstalk (Docker environment) |
+| **Load Balancer**       | Application Load Balancer (ALB)            |
+| **CDN / HTTPS**         | Amazon CloudFront                          |
+| **SSL Certificate**     | AWS Certificate Manager (ACM)              |
+| **Region**              | eu-north-1 (Stockholm)                     |
+
+**Live URL:**
+👉 [https://d277uiwprg0wk.cloudfront.net](https://d277uiwprg0wk.cloudfront.net)
+
+---
+
+## 🧠 Tech Stack
+
+| Layer          | Technology                                      |
+| -------------- | ----------------------------------------------- |
+| Backend        | Flask, Flask-SQLAlchemy, Alembic, Flask-Migrate |
+| Authentication | Flask-JWT-Extended, Flask-CORS                  |
+| Validation     | Pydantic, email-validator                       |
+| Database       | PostgreSQL (Docker) / SQLite (local)            |
+| Deployment     | Docker, Elastic Beanstalk, CloudFront           |
+| Web Server     | Gunicorn                                        |
+| Config         | `.env`, `Dockerrun.aws.json`, `.ebextensions/`  |
+
+---
+
+## 🐳 Run with Docker (Recommended)
+
+### 1️⃣ Prerequisites
+
+* Docker Desktop (Windows/macOS) or Docker Engine + Compose (Linux)
 * Git
 
-### 2) Clone & configure
+### 2️⃣ Clone & Configure
 
 ```bash
 git clone https://github.com/G1DO/questboard
 cd questboard
 cp .env.example .env
-# edit SECRET_KEY in .env to a long random value
-# python -c "import secrets; print(secrets.token_urlsafe(64))"
+# Generate a secure key:
+python -c "import secrets; print(secrets.token_urlsafe(64))"
 ```
 
-### 3) Start with Postgres via Compose
+### 3️⃣ Start Containers
 
 ```bash
 docker compose pull
 docker compose up -d
 ```
 
-Open:
+Access:
 
-* API health: [http://localhost:8000/health](http://localhost:8000/health)
-* Home: [http://localhost:8000/](http://localhost:8000/)
+* API Health → [http://localhost:8000/health](http://localhost:8000/health)
+* Web App → [http://localhost:8000](http://localhost:8000)
 
 ---
 
-## Run locally without Docker
+## 💻 Run Locally (Without Docker)
 
-### 1) Create venv & install
+### 1️⃣ Setup Virtual Environment
 
 ```bash
 python -m venv .venv
-# Windows: .venv\Scripts\activate
-# Linux/macOS/WSL:
-source .venv/bin/activate
-
+source .venv/bin/activate  # (Windows: .venv\Scripts\activate)
 pip install -r requirements.txt
 ```
 
-### 2) Environment
+### 2️⃣ Configure Environment
 
 ```bash
 cp .env.example .env
-# For local dev:
+# Example:
 # FLASK_ENV=development
-# SECRET_KEY=<random-secret>
+# SECRET_KEY=<your-secret>
 ```
 
-### 3) DB (SQLite by default)
+### 3️⃣ Initialize Database
 
 ```bash
 flask --app wsgi.py db upgrade
 python wsgi.py
 ```
 
-Open: [http://localhost:8000](http://localhost:8000)
+Then open → [http://localhost:8000](http://localhost:8000)
 
 ---
 
-## Environment Variables
+## ⚙️ Environment Variables
 
-`./.env` (loaded by Docker via `env_file`, and by Python if you `load_dotenv`):
+Environment file: `.env`
+(loaded automatically by Flask and Docker)
 
-* `FLASK_ENV` — `production` in Docker, `development` locally for debug
-* `SECRET_KEY` — long, random, **required** (used to sign cookies/JWTs)
-* `DATABASE_URL` — override DB (Compose sets it for Postgres)
+| Variable       | Description                                   |
+| -------------- | --------------------------------------------- |
+| `FLASK_ENV`    | `production` or `development`                 |
+| `SECRET_KEY`   | Required for JWT and cookies                  |
+| `DATABASE_URL` | Optional, overrides default DB                |
+| `PORT`         | Default 8000 (Elastic Beanstalk auto-detects) |
 
 Example:
 
 ```env
 FLASK_ENV=production
-SECRET_KEY=<paste-a-random-secret>
+SECRET_KEY=<your-secret>
 # DATABASE_URL=postgresql+psycopg://quest:quest@db:5432/questdb
 ```
 
 ---
 
-## Database & Migrations
+## 🧩 Database & Migrations
 
-* Create/upgrade schema:
+Run migrations manually:
 
 ```bash
+flask --app wsgi.py db migrate -m "add new model"
 flask --app wsgi.py db upgrade
 ```
 
-* After model changes:
-
-```bash
-flask --app wsgi.py db migrate -m "describe change"
-flask --app wsgi.py db upgrade
-```
-
-* In Docker:
+Or inside Docker:
 
 ```bash
 docker compose run --rm web flask db migrate -m "..."
@@ -141,95 +169,88 @@ docker compose run --rm web flask db upgrade
 
 ---
 
-## API Endpoints
+## 🔗 API Endpoints
 
 Base URL: `/api`
 
-| Method | Path                                   | Body (JSON)                                                                                       | Response (example)                            |
-| -----: | -------------------------------------- | ------------------------------------------------------------------------------------------------- | --------------------------------------------- |
-|   POST | `/auth/register`                       | `{"email":"dev@me.com","display_name":"Dev","password":"secret123"}`                              | `{"id":1,"email":"...","display_name":"..."}` |
-|   POST | `/auth/login`                          | `{"email":"dev@me.com","password":"secret123"}`                                                   | `{ "access_token": "...", "user": {...} }`    |
-|    GET | `/auth/me` (JWT)                       | —                                                                                                 | Current user                                  |
-|   POST | `/auth/logout` (JWT)                   | —                                                                                                 | `{ "msg": "logged out" }`                     |
-|    GET | `/quests`                              | —                                                                                                 | `[ ...quests ]`                               |
-|   POST | `/quests`                              | `{"title":"...","description":"...","starts_on":"YYYY-MM-DD","ends_on":"YYYY-MM-DD","points":10}` | `{ "id": <quest_id> }`                        |
-|   POST | `/submissions`                         | `{"user_id":1,"quest_id":1,"text":"Finished!","image_url":null}`                                  | `{ "id":..., "status":"pending" }`            |
-|   POST | `/submissions/<submission_id>/approve` | —                                                                                                 | `{ "id":..., "status":"approved" }`           |
-|    GET | `/leaderboard`                         | —                                                                                                 | `[{"user":"Alice","points":15}, ...]`         |
-
-Notes:
-
-* Dates are ISO `YYYY-MM-DD`.
-* Points are awarded **only when a submission is approved**.
+| Method | Endpoint                    | Body                                                                 | Description        |
+| ------ | --------------------------- | -------------------------------------------------------------------- | ------------------ |
+| POST   | `/auth/register`            | `{"email":"dev@me.com","display_name":"Dev","password":"secret123"}` | Create new user    |
+| POST   | `/auth/login`               | `{"email":"dev@me.com","password":"secret123"}`                      | Authenticate user  |
+| GET    | `/auth/me`                  | —                                                                    | Get current user   |
+| POST   | `/auth/logout`              | —                                                                    | Logout user        |
+| GET    | `/quests`                   | —                                                                    | List quests        |
+| POST   | `/quests`                   | Quest JSON                                                           | Create new quest   |
+| POST   | `/submissions`              | Submission JSON                                                      | Submit proof       |
+| POST   | `/submissions/<id>/approve` | —                                                                    | Approve submission |
+| GET    | `/leaderboard`              | —                                                                    | Weekly leaderboard |
 
 ---
 
-## Basic UI Pages
+## 🖥️ Basic UI Pages
 
-Server-rendered pages (Jinja):
-
-* `/` Home
-* `/register` Register
-* `/login` Login
-* `/quests` List quests + create submission
-* `/leaderboard` Weekly leaderboard
+| Route          | Description             |
+| -------------- | ----------------------- |
+| `/`            | Home                    |
+| `/register`    | Register page           |
+| `/login`       | Login page              |
+| `/quests`      | Quest list + submission |
+| `/leaderboard` | Leaderboard view        |
 
 ---
 
-## Docker Image (push/pull)
+## 🐙 Docker Image (Push / Pull)
 
-The app image is published at:
+App images on Docker Hub:
 
 ```
-g1d0/questboard-web:v0.1.0
 g1d0/questboard-web:latest
 ```
 
-Use in Compose:
+Use in `docker-compose.yml`:
 
 ```yaml
 web:
-  image: g1d0/questboard-web:v0.1.0
+  image: g1d0/questboard-web:latest
   env_file: .env
   environment:
     DATABASE_URL: postgresql+psycopg://quest:quest@db:5432/questdb
     FLASK_ENV: production
-  ports: ["8000:8000"]
+  ports:
+    - "8000:8000"
   depends_on:
     db:
       condition: service_healthy
 ```
 
-Pull & run anywhere:
-
-```bash
-docker login
-docker compose pull
-docker compose up -d
-```
-
 ---
 
-## Project Structure
+## 🗂️ Project Structure
 
 ```
 questboard/
+├─ .ebextensions/
+│  └─ 01_port.config          # Maps container port 8000 for Elastic Beanstalk
+├─ .elasticbeanstalk/         # EB environment & deployment metadata
 ├─ app/
-│  ├─ __init__.py        # App factory: config, extensions, blueprints
-│  ├─ routes.py          # / and /health
-│  ├─ pages.py           # Jinja page routes
-│  ├─ api.py             # /api/* core endpoints
-│  ├─ auth.py            # /auth/* (JWT cookies)
-│  ├─ models.py          # SQLAlchemy models
-│  ├─ schemas.py         # Pydantic validators
-│  ├─ extensions.py      # db, migrate singletons
-│  ├─ templates/         # Jinja templates
-│  └─ static/            # CSS/JS
-├─ migrations/           # Alembic
-├─ instance/             # runtime data (gitignored)
-├─ Dockerfile
-├─ docker-compose.yml
-├─ requirements.txt
-├─ .env.example
-└─ README.md
+│  ├─ __init__.py             # App factory: config, blueprints
+│  ├─ routes.py               # / and /health
+│  ├─ pages.py                # Jinja routes
+│  ├─ api.py                  # API endpoints
+│  ├─ auth.py                 # JWT auth routes
+│  ├─ models.py               # SQLAlchemy models
+│  ├─ schemas.py              # Pydantic validators
+│  ├─ extensions.py           # db, migrate
+│  ├─ templates/              # Jinja templates
+│  └─ static/                 # JS / CSS
+├─ migrations/                # Alembic versions
+├─ instance/                  # Runtime data (gitignored)
+├─ Dockerfile                 # Flask + Gunicorn container
+├─ docker-compose.yml         # Local multi-container setup
+├─ Dockerrun.aws.json         # AWS Elastic Beanstalk Docker config
+├─ requirements.txt           # Dependencies
+├─ .env.example               # Env template
+├─ wsgi.py                    # Entry point for Gunicorn
+├─ README.md
+└─ misc/                      # Other project files (.gitignore, .dockerignore, etc.)
 ```
