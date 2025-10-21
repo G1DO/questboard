@@ -45,7 +45,7 @@ QuestBoard is live and secured with HTTPS through AWS infrastructure:
 | **Region**              | eu-north-1 (Stockholm)                     |
 
 **Live URL:**
-👉 [https://d277uiwprg0wk.cloudfront.net](https://d277uiwprg0wk.cloudfront.net)
+👉 [Live Demo](https://d277uiwpvrg0wk.cloudfront.net/)
 
 ---
 
