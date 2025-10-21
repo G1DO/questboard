@@ -24,7 +24,7 @@
         "command": ["CMD-SHELL", "pg_isready -U questdb -d questdb"],
         "interval": 5,
         "timeout": 5,
-        "retries": 20
+        "retries": 10
       }
     },
     {
