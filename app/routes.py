@@ -5,9 +5,6 @@ bp = Blueprint("core", __name__)
 def health():
     return jsonify(status="ok"), 200
 
-@bp.get("/")
-def info():
-    return jsonify(status="ok"), 200
 
 # CHANGED: was "/", move it to "/api" (or "/api/info")
 @bp.get("/api")
