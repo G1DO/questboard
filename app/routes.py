@@ -4,6 +4,7 @@ bp = Blueprint("core", __name__)
 @bp.get("/health")
 def health():
     return jsonify(status="ok"), 200
+
 @bp.get("/")
 def info():
     return jsonify(status="ok"), 200
