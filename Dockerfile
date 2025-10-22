@@ -20,4 +20,4 @@ COPY --chown=appuser:appuser . .
 USER appuser
 
 EXPOSE 8080
-CMD ["bash", "-lc", "flask db upgrade || true && exec gunicorn wsgi:app"]
+CMD ["sh", "-c", "flask db upgrade || true && exec gunicorn --bind 0.0.0.0:8080 wsgi:app"]
