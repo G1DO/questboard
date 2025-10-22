@@ -1,0 +1,23 @@
+# Python
+__pycache__/      # compiled Python bytecode, useless to commit
+*.pyc            # same thing, one-off .pyc files
+.venv/           # your virtual environment (can be huge, recreate with requirements.txt)
+.env   
+#.env/          # your real secrets, NEVER commit this
+.env.*           # variations of the above
+.venv
+# OS/Editors
+.DS_Store        # macOS metadata file, not useful
+.idea/           # JetBrains IDE project settings
+.vscode/         # VS Code local settings
+**/__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+instance/
+.mypy_cache/
+.pytest_cache/
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

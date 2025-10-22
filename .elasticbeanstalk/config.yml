@@ -1,0 +1,22 @@
+branch-defaults:
+  main:
+    environment: questboard1-env
+    group_suffix: null
+environment-defaults:
+  questboard3-env:
+    branch: null
+    repository: null
+global:
+  application_name: questboard1
+  branch: null
+  default_ec2_keyname: null
+  default_platform: Docker
+  default_region: eu-north-1
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: null
+  repository: null
+  sc: git
+  workspace_type: Application

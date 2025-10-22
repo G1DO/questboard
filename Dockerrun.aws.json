@@ -1,0 +1,10 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "Image": {
+    "Name": "g1d0/questboard-web:latest",
+    "Update": "true"
+  },
+  "Ports": [
+    { "ContainerPort": "8080" }
+  ]
+}
