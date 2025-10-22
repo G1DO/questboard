@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: questdb
+      POSTGRES_PASSWORD: questdb
+      POSTGRES_DB: questdb
+    ports:
+      - "5433:5432"          # for local testing only
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U questdb -d questdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  web:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://questdb:questdb@db:5432/questdb
+      FLASK_ENV: production
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
