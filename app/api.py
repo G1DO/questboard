@@ -59,9 +59,22 @@ def create_submission():
         status="approved",  # auto-approve immediately
     )
     db.session.add(s)
-    
 
+    # update leaderboard points automatically
+    from datetime import datetime
+    from .models import Score, Quest, week_start_for
 
+    q = Quest.query.get(s.quest_id)
+    if q:
+        week = week_start_for(datetime.utcnow())
+        score = Score.query.filter_by(user_id=s.user_id, week_start=week).first()
+        if not score:
+            score = Score(user_id=s.user_id, week_start=week, points=0)
+            db.session.add(score)
+        score.points += q.points
+
+    db.session.commit()
+    return jsonify(id=s.id, status=s.status), 201
 
 
 @api_bp.post("/submissions/<int:submission_id>/approve")
