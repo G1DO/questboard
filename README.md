@@ -1,3 +1,7 @@
+Here’s your **complete updated README.md** (ready to replace the old one):
+
+---
+
 # 🧭 QuestBoard
 
 A gamified “micro-challenges” platform built with **Flask**.
@@ -10,25 +14,26 @@ Users register, join quests, submit proof, and climb a weekly leaderboard.
 * Backend: **Flask + SQLAlchemy + Alembic (Flask-Migrate)**
 * Authentication: **JWT (HttpOnly cookies)** via Flask-JWT-Extended
 * Frontend: **Jinja templates + Vanilla JS**
-* Database: **Postgres (Docker)** or **SQLite (local dev)**
+* Database: **AWS RDS PostgreSQL (Production)** / **Docker PostgreSQL or SQLite (Local)**
 * Containerization: **Docker + Gunicorn**
-* CI/CD Ready: **Elastic Beanstalk (EB CLI) auto-deploy**
-* **Live HTTPS Deployment** via AWS CloudFront + ACM Certificate
+* CI/CD: **AWS Elastic Beanstalk (EB CLI) auto-deploy**
+* HTTPS: **AWS CloudFront + ACM Certificate**
 
 ---
 
 ## 📦 Table of Contents
 
 1. [Live Deployment](#-live-deployment)
-2. [Tech Stack](#-tech-stack)
-3. [Run with Docker (Recommended)](#-run-with-docker-recommended)
-4. [Run Locally (Without Docker)](#-run-locally-without-docker)
-5. [Environment Variables](#-environment-variables)
-6. [Database & Migrations](#-database--migrations)
-7. [API Endpoints](#-api-endpoints)
-8. [Basic UI Pages](#️-basic-ui-pages)
-9. [Docker Image (Push / Pull)](#-docker-image-push--pull)
-10. [Project Structure](#️-project-structure)
+2. [AWS PostgreSQL Setup](#-aws-postgresql-setup)
+3. [Tech Stack](#-tech-stack)
+4. [Run with Docker (Recommended)](#-run-with-docker-recommended)
+5. [Run Locally (Without Docker)](#-run-locally-without-docker)
+6. [Environment Variables](#-environment-variables)
+7. [Database & Migrations](#-database--migrations)
+8. [API Endpoints](#-api-endpoints)
+9. [Basic UI Pages](#️-basic-ui-pages)
+10. [Docker Image (Push / Pull)](#-docker-image-push--pull)
+11. [Project Structure](#️-project-structure)
 
 ---
 
@@ -39,35 +44,60 @@ QuestBoard is live and secured with HTTPS through AWS infrastructure:
 | Component               | Service                                    |
 | ----------------------- | ------------------------------------------ |
 | **Application Hosting** | AWS Elastic Beanstalk (Docker environment) |
-| **Load Balancer**       | Application Load Balancer (ALB)            |
+| **Database**            | **AWS RDS – PostgreSQL 16**                |
 | **CDN / HTTPS**         | Amazon CloudFront                          |
 | **SSL Certificate**     | AWS Certificate Manager (ACM)              |
 | **Region**              | eu-north-1 (Stockholm)                     |
 
 **Live URL:**
-👉 [Live Demo](https://d277uiwpvrg0wk.cloudfront.net/)
+[Live Demo](https://d277uiwpvrg0wk.cloudfront.net/)
+
+
+---
+
+## 🗄️ AWS PostgreSQL Setup
+
+Production uses **Amazon RDS PostgreSQL** instead of Dockerized Postgres.
+
+**Configuration Summary:**
+
+| Setting             | Example                                                   |
+| ------------------- | --------------------------------------------------------- |
+| **Engine**          | PostgreSQL 16                                             |
+| **DB Name**         | `questdb`                                                 |
+| **Master Username** | `questdb`                                                 |
+| **Endpoint**        | `questboard-db.cpioco0eyxc1.eu-north-1.rds.amazonaws.com` |
+| **Port**            | `5432`                                                    |
+| **Security Group**  | Allows inbound traffic from Elastic Beanstalk instance    |
+| **Parameter Group** | Default (UTF8 encoding)                                   |
+
+**Connection string used in `.env`:**
+
+```bash
+DATABASE_URL=postgresql+psycopg2://questdb:<your-password>@questboard-db.cpioco0eyxc1.eu-north-1.rds.amazonaws.com:5432/postgres
+```
 
 ---
 
 ## 🧠 Tech Stack
 
-| Layer          | Technology                                      |
-| -------------- | ----------------------------------------------- |
-| Backend        | Flask, Flask-SQLAlchemy, Alembic, Flask-Migrate |
-| Authentication | Flask-JWT-Extended, Flask-CORS                  |
-| Validation     | Pydantic, email-validator                       |
-| Database       | PostgreSQL (Docker) / SQLite (local)            |
-| Deployment     | Docker, Elastic Beanstalk, CloudFront           |
-| Web Server     | Gunicorn                                        |
-| Config         | `.env`, `Dockerrun.aws.json`, `.ebextensions/`  |
+| Layer      | Technology                                                      |
+| ---------- | --------------------------------------------------------------- |
+| Backend    | Flask, Flask-SQLAlchemy, Alembic                                |
+| Auth       | Flask-JWT-Extended, Flask-CORS                                  |
+| Validation | Pydantic, email-validator                                       |
+| Database   | **AWS RDS PostgreSQL (prod)** / Docker Postgres or SQLite (dev) |
+| Deployment | Docker, Elastic Beanstalk, CloudFront                           |
+| Web Server | Gunicorn                                                        |
+| Config     | `.env`, `Dockerrun.aws.json`, `.ebextensions/`                  |
 
 ---
 
-## 🐳 Run with Docker (Recommended)
+## 🐳 Run with Docker (Recommended for Local Development)
 
 ### 1️⃣ Prerequisites
 
-* Docker Desktop (Windows/macOS) or Docker Engine + Compose (Linux)
+* Docker Desktop (Windows/macOS) or Compose (Linux)
 * Git
 
 ### 2️⃣ Clone & Configure
@@ -76,72 +106,49 @@ QuestBoard is live and secured with HTTPS through AWS infrastructure:
 git clone https://github.com/G1DO/questboard
 cd questboard
 cp .env.example .env
-# Generate a secure key:
-python -c "import secrets; print(secrets.token_urlsafe(64))"
 ```
 
 ### 3️⃣ Start Containers
 
 ```bash
-docker compose pull
 docker compose up -d
 ```
 
 Access:
 
+* Web → [http://localhost:8000](http://localhost:8000)
 * API Health → [http://localhost:8000/health](http://localhost:8000/health)
-* Web App → [http://localhost:8000](http://localhost:8000)
 
 ---
 
 ## 💻 Run Locally (Without Docker)
 
-### 1️⃣ Setup Virtual Environment
-
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # (Windows: .venv\Scripts\activate)
+source .venv/bin/activate
 pip install -r requirements.txt
-```
-
-### 2️⃣ Configure Environment
-
-```bash
 cp .env.example .env
-# Example:
-# FLASK_ENV=development
-# SECRET_KEY=<your-secret>
-```
-
-### 3️⃣ Initialize Database
-
-```bash
 flask --app wsgi.py db upgrade
 python wsgi.py
 ```
-
-Then open → [http://localhost:8000](http://localhost:8000)
 
 ---
 
 ## ⚙️ Environment Variables
 
-Environment file: `.env`
-(loaded automatically by Flask and Docker)
-
-| Variable       | Description                                   |
-| -------------- | --------------------------------------------- |
-| `FLASK_ENV`    | `production` or `development`                 |
-| `SECRET_KEY`   | Required for JWT and cookies                  |
-| `DATABASE_URL` | Optional, overrides default DB                |
-| `PORT`         | Default 8000 (Elastic Beanstalk auto-detects) |
+| Variable       | Description                   |
+| -------------- | ----------------------------- |
+| `FLASK_ENV`    | `development` or `production` |
+| `SECRET_KEY`   | JWT & cookies                 |
+| `DATABASE_URL` | RDS connection string         |
+| `PORT`         | Default 8000                  |
 
 Example:
 
 ```env
 FLASK_ENV=production
 SECRET_KEY=<your-secret>
-# DATABASE_URL=postgresql+psycopg://quest:quest@db:5432/questdb
+DATABASE_URL=postgresql+psycopg2://questdb:<password>@questboard-db.cpioco0eyxc1.eu-north-1.rds.amazonaws.com:5432/postgres
 ```
 
 ---
@@ -151,14 +158,14 @@ SECRET_KEY=<your-secret>
 Run migrations manually:
 
 ```bash
-flask --app wsgi.py db migrate -m "add new model"
+flask --app wsgi.py db migrate -m "init"
 flask --app wsgi.py db upgrade
 ```
 
 Or inside Docker:
 
 ```bash
-docker compose run --rm web flask db migrate -m "..."
+docker compose run --rm web flask db migrate -m "init"
 docker compose run --rm web flask db upgrade
 ```
 
@@ -196,26 +203,10 @@ Base URL: `/api`
 
 ## 🐙 Docker Image (Push / Pull)
 
-App images on Docker Hub:
+App image on Docker Hub:
 
 ```
 g1d0/questboard-web:latest
-```
-
-Use in `docker-compose.yml`:
-
-```yaml
-web:
-  image: g1d0/questboard-web:latest
-  env_file: .env
-  environment:
-    DATABASE_URL: postgresql+psycopg://quest:quest@db:5432/questdb
-    FLASK_ENV: production
-  ports:
-    - "8000:8000"
-  depends_on:
-    db:
-      condition: service_healthy
 ```
 
 ---
@@ -246,6 +237,5 @@ questboard/
 ├─ requirements.txt           # Dependencies
 ├─ .env.example               # Env template
 ├─ wsgi.py                    # Entry point for Gunicorn
-├─ README.md
-└─ misc/                      # Other project files (.gitignore, .dockerignore, etc.)
+└─ README.md
 ```
