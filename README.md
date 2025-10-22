@@ -22,14 +22,12 @@ Users register, join quests, submit proof, and climb a weekly leaderboard.
 1. [Live Deployment](#-live-deployment)
 2. [AWS PostgreSQL Setup](#-aws-postgresql-setup)
 3. [Tech Stack](#-tech-stack)
-4. [Run with Docker (Recommended)](#-run-with-docker-recommended)
-5. [Run Locally (Without Docker)](#-run-locally-without-docker)
-6. [Environment Variables](#-environment-variables)
-7. [Database & Migrations](#-database--migrations)
-8. [API Endpoints](#-api-endpoints)
-9. [Basic UI Pages](#️-basic-ui-pages)
-10. [Docker Image (Push / Pull)](#-docker-image-push--pull)
-11. [Project Structure](#️-project-structure)
+4. [Environment Variables](#-environment-variables)
+5. [Database & Migrations](#-database--migrations)
+6. [API Endpoints](#-api-endpoints)
+7. [Basic UI Pages](#️-basic-ui-pages)
+8. [Docker Image (Push / Pull)](#-docker-image-push--pull)
+9. [Project Structure](#️-project-structure)
 
 ---
 
@@ -89,46 +87,6 @@ DATABASE_URL=postgresql+psycopg2://questdb:<your-password>@questboard-db.cpioco0
 
 ---
 
-## 🐳 Run with Docker (Recommended for Local Development)
-
-### 1️⃣ Prerequisites
-
-* Docker Desktop (Windows/macOS) or Compose (Linux)
-* Git
-
-### 2️⃣ Clone & Configure
-
-```bash
-git clone https://github.com/G1DO/questboard
-cd questboard
-cp .env.example .env
-```
-
-### 3️⃣ Start Containers
-
-```bash
-docker compose up -d
-```
-
-Access:
-
-* Web → [http://localhost:8000](http://localhost:8000)
-* API Health → [http://localhost:8000/health](http://localhost:8000/health)
-
----
-
-## 💻 Run Locally (Without Docker)
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env
-flask --app wsgi.py db upgrade
-python wsgi.py
-```
-
----
 
 ## ⚙️ Environment Variables
 
